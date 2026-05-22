@@ -1,88 +1,75 @@
 """
-Módulo de gerenciamento de banco de dados usando Google Sheets.
+Módulo de gerenciamento de banco de dados usando Supabase.
 Salva respostas dos alunos e permite recuperação de dados para análise.
 """
 
 import streamlit as st
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
-import json
+from supabase import create_client, Client
 
 
-def get_google_sheets_client():
+@st.cache_resource
+def get_supabase_client() -> Optional[Client]:
     """
-    Conecta ao Google Sheets usando credenciais do Streamlit secrets.
+    Conecta ao Supabase usando credenciais do Streamlit secrets.
     
     Returns:
-        gspread.Client: Cliente autenticado do Google Sheets
+        Client: Cliente autenticado do Supabase
     """
     try:
-        scope = [
-            'https://spreadsheets.google.com/feeds',
-            'https://www.googleapis.com/auth/drive'
-        ]
+        url = st.secrets["supabase"]["url"]
+        key = st.secrets["supabase"]["key"]
         
-        # Carregar credenciais dos secrets
-        credentials_dict = dict(st.secrets["gcp_service_account"])
-        credentials = ServiceAccountCredentials.from_json_keyfile_dict(
-            credentials_dict, scope
-        )
-        
-        client = gspread.authorize(credentials)
+        client = create_client(url, key)
         return client
     except Exception as e:
-        st.error(f"Erro ao conectar ao Google Sheets: {e}")
+        st.error(f"Erro ao conectar ao Supabase: {e}")
         return None
 
 
-def get_or_create_worksheet(client, sheet_id: str, worksheet_name: str):
+def init_database():
     """
-    Obtém ou cria uma worksheet no Google Sheets.
+    Inicializa as tabelas no Supabase se não existirem.
     
-    Args:
-        client: Cliente do Google Sheets
-        sheet_id: ID da planilha
-        worksheet_name: Nome da worksheet
+    SQL para criar as tabelas (execute no Supabase SQL Editor):
     
-    Returns:
-        gspread.Worksheet: Worksheet solicitada
+    -- Tabela de sessões
+    CREATE TABLE IF NOT EXISTS sessions (
+        id BIGSERIAL PRIMARY KEY,
+        student_id TEXT NOT NULL,
+        student_name TEXT NOT NULL,
+        started_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        completed_at TIMESTAMP WITH TIME ZONE,
+        final_theta FLOAT,
+        total_correct INTEGER,
+        total_timeout INTEGER,
+        status TEXT NOT NULL DEFAULT 'in_progress',
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    );
+    
+    -- Tabela de respostas
+    CREATE TABLE IF NOT EXISTS responses (
+        id BIGSERIAL PRIMARY KEY,
+        student_id TEXT NOT NULL,
+        student_name TEXT NOT NULL,
+        question_id TEXT NOT NULL,
+        answer TEXT,
+        is_correct BOOLEAN NOT NULL,
+        is_timeout BOOLEAN NOT NULL,
+        timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        theta_estimate FLOAT,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    );
+    
+    -- Índices para melhor performance
+    CREATE INDEX IF NOT EXISTS idx_sessions_student_id ON sessions(student_id);
+    CREATE INDEX IF NOT EXISTS idx_sessions_status ON sessions(status);
+    CREATE INDEX IF NOT EXISTS idx_responses_student_id ON responses(student_id);
+    CREATE INDEX IF NOT EXISTS idx_responses_question_id ON responses(question_id);
     """
-    try:
-        spreadsheet = client.open_by_key(sheet_id)
-        
-        try:
-            worksheet = spreadsheet.worksheet(worksheet_name)
-        except gspread.exceptions.WorksheetNotFound:
-            # Criar worksheet se não existir
-            worksheet = spreadsheet.add_worksheet(
-                title=worksheet_name, 
-                rows="1000", 
-                cols="20"
-            )
-            
-            # Adicionar cabeçalhos
-            if worksheet_name == "responses":
-                headers = [
-                    "student_id", "student_name", "question_id", 
-                    "answer", "is_correct", "is_timeout", 
-                    "timestamp", "theta_estimate"
-                ]
-                worksheet.append_row(headers)
-            elif worksheet_name == "sessions":
-                headers = [
-                    "student_id", "student_name", "started_at", 
-                    "completed_at", "final_theta", "total_correct", 
-                    "total_timeout", "status"
-                ]
-                worksheet.append_row(headers)
-        
-        return worksheet
-    except Exception as e:
-        st.error(f"Erro ao acessar worksheet '{worksheet_name}': {e}")
-        return None
+    pass
 
 
 def generate_student_id(student_name: str) -> str:
@@ -112,7 +99,7 @@ def save_response(
     theta_estimate: float
 ) -> bool:
     """
-    Salva uma resposta individual no Google Sheets.
+    Salva uma resposta individual no Supabase.
     
     Args:
         student_id: ID único do aluno
@@ -127,30 +114,21 @@ def save_response(
         bool: True se salvou com sucesso, False caso contrário
     """
     try:
-        client = get_google_sheets_client()
+        client = get_supabase_client()
         if not client:
             return False
         
-        sheet_id = st.secrets["sheet_id"]
-        worksheet = get_or_create_worksheet(client, sheet_id, "responses")
+        data = {
+            "student_id": student_id,
+            "student_name": student_name,
+            "question_id": question_id,
+            "answer": answer if answer else None,
+            "is_correct": is_correct,
+            "is_timeout": is_timeout,
+            "theta_estimate": float(theta_estimate)
+        }
         
-        if not worksheet:
-            return False
-        
-        timestamp = datetime.now().isoformat()
-        
-        row = [
-            student_id,
-            student_name,
-            question_id,
-            answer if answer else "",
-            str(is_correct),
-            str(is_timeout),
-            timestamp,
-            str(theta_estimate)
-        ]
-        
-        worksheet.append_row(row)
+        result = client.table("responses").insert(data).execute()
         return True
         
     except Exception as e:
@@ -170,30 +148,17 @@ def start_session(student_id: str, student_name: str) -> bool:
         bool: True se criou com sucesso, False caso contrário
     """
     try:
-        client = get_google_sheets_client()
+        client = get_supabase_client()
         if not client:
             return False
         
-        sheet_id = st.secrets["sheet_id"]
-        worksheet = get_or_create_worksheet(client, sheet_id, "sessions")
+        data = {
+            "student_id": student_id,
+            "student_name": student_name,
+            "status": "in_progress"
+        }
         
-        if not worksheet:
-            return False
-        
-        started_at = datetime.now().isoformat()
-        
-        row = [
-            student_id,
-            student_name,
-            started_at,
-            "",  # completed_at (será preenchido depois)
-            "",  # final_theta
-            "",  # total_correct
-            "",  # total_timeout
-            "in_progress"
-        ]
-        
-        worksheet.append_row(row)
+        result = client.table("sessions").insert(data).execute()
         return True
         
     except Exception as e:
@@ -220,33 +185,20 @@ def complete_session(
         bool: True se atualizou com sucesso, False caso contrário
     """
     try:
-        client = get_google_sheets_client()
+        client = get_supabase_client()
         if not client:
             return False
         
-        sheet_id = st.secrets["sheet_id"]
-        worksheet = get_or_create_worksheet(client, sheet_id, "sessions")
+        data = {
+            "completed_at": datetime.now().isoformat(),
+            "final_theta": float(final_theta),
+            "total_correct": int(total_correct),
+            "total_timeout": int(total_timeout),
+            "status": "completed"
+        }
         
-        if not worksheet:
-            return False
-        
-        # Buscar a linha do aluno
-        records = worksheet.get_all_records()
-        for idx, record in enumerate(records):
-            if record['student_id'] == student_id and record['status'] == 'in_progress':
-                row_num = idx + 2  # +2 porque começa em 1 e tem cabeçalho
-                
-                completed_at = datetime.now().isoformat()
-                
-                worksheet.update_cell(row_num, 4, completed_at)  # completed_at
-                worksheet.update_cell(row_num, 5, str(final_theta))  # final_theta
-                worksheet.update_cell(row_num, 6, str(total_correct))  # total_correct
-                worksheet.update_cell(row_num, 7, str(total_timeout))  # total_timeout
-                worksheet.update_cell(row_num, 8, "completed")  # status
-                
-                return True
-        
-        return False
+        result = client.table("sessions").update(data).eq("student_id", student_id).eq("status", "in_progress").execute()
+        return True
         
     except Exception as e:
         st.error(f"Erro ao finalizar sessão: {e}")
@@ -264,31 +216,17 @@ def get_student_responses(student_id: str) -> pd.DataFrame:
         pd.DataFrame: DataFrame com as respostas do aluno
     """
     try:
-        client = get_google_sheets_client()
+        client = get_supabase_client()
         if not client:
             return pd.DataFrame()
         
-        sheet_id = st.secrets["sheet_id"]
-        worksheet = get_or_create_worksheet(client, sheet_id, "responses")
+        result = client.table("responses").select("*").eq("student_id", student_id).execute()
         
-        if not worksheet:
-            return pd.DataFrame()
-        
-        records = worksheet.get_all_records()
-        df = pd.DataFrame(records)
-        
-        if df.empty:
+        if result.data:
+            df = pd.DataFrame(result.data)
             return df
         
-        # Filtrar por student_id
-        df = df[df['student_id'] == student_id]
-        
-        # Converter tipos
-        df['is_correct'] = df['is_correct'].astype(str).str.lower() == 'true'
-        df['is_timeout'] = df['is_timeout'].astype(str).str.lower() == 'true'
-        df['theta_estimate'] = pd.to_numeric(df['theta_estimate'], errors='coerce')
-        
-        return df
+        return pd.DataFrame()
         
     except Exception as e:
         st.error(f"Erro ao recuperar respostas: {e}")
@@ -303,28 +241,17 @@ def get_all_sessions() -> pd.DataFrame:
         pd.DataFrame: DataFrame com todas as sessões
     """
     try:
-        client = get_google_sheets_client()
+        client = get_supabase_client()
         if not client:
             return pd.DataFrame()
         
-        sheet_id = st.secrets["sheet_id"]
-        worksheet = get_or_create_worksheet(client, sheet_id, "sessions")
+        result = client.table("sessions").select("*").order("started_at", desc=True).execute()
         
-        if not worksheet:
-            return pd.DataFrame()
-        
-        records = worksheet.get_all_records()
-        df = pd.DataFrame(records)
-        
-        if df.empty:
+        if result.data:
+            df = pd.DataFrame(result.data)
             return df
         
-        # Converter tipos
-        df['final_theta'] = pd.to_numeric(df['final_theta'], errors='coerce')
-        df['total_correct'] = pd.to_numeric(df['total_correct'], errors='coerce')
-        df['total_timeout'] = pd.to_numeric(df['total_timeout'], errors='coerce')
-        
-        return df
+        return pd.DataFrame()
         
     except Exception as e:
         st.error(f"Erro ao recuperar sessões: {e}")
@@ -339,28 +266,17 @@ def get_all_responses() -> pd.DataFrame:
         pd.DataFrame: DataFrame com todas as respostas
     """
     try:
-        client = get_google_sheets_client()
+        client = get_supabase_client()
         if not client:
             return pd.DataFrame()
         
-        sheet_id = st.secrets["sheet_id"]
-        worksheet = get_or_create_worksheet(client, sheet_id, "responses")
+        result = client.table("responses").select("*").order("timestamp", desc=True).execute()
         
-        if not worksheet:
-            return pd.DataFrame()
-        
-        records = worksheet.get_all_records()
-        df = pd.DataFrame(records)
-        
-        if df.empty:
+        if result.data:
+            df = pd.DataFrame(result.data)
             return df
         
-        # Converter tipos
-        df['is_correct'] = df['is_correct'].astype(str).str.lower() == 'true'
-        df['is_timeout'] = df['is_timeout'].astype(str).str.lower() == 'true'
-        df['theta_estimate'] = pd.to_numeric(df['theta_estimate'], errors='coerce')
-        
-        return df
+        return pd.DataFrame()
         
     except Exception as e:
         st.error(f"Erro ao recuperar todas as respostas: {e}")
@@ -378,29 +294,21 @@ def check_existing_session(student_name: str) -> Optional[Tuple[str, int]]:
         Optional[Tuple[str, int]]: (student_id, número de questões respondidas) ou None
     """
     try:
-        client = get_google_sheets_client()
+        client = get_supabase_client()
         if not client:
             return None
         
-        sheet_id = st.secrets["sheet_id"]
-        worksheet = get_or_create_worksheet(client, sheet_id, "sessions")
+        result = client.table("sessions").select("*").eq("student_name", student_name).eq("status", "in_progress").execute()
         
-        if not worksheet:
-            return None
-        
-        records = worksheet.get_all_records()
-        
-        for record in records:
-            if (record['student_name'].lower() == student_name.lower() and 
-                record['status'] == 'in_progress'):
-                
-                student_id = record['student_id']
-                
-                # Contar quantas questões já foram respondidas
-                responses_df = get_student_responses(student_id)
-                num_answered = len(responses_df)
-                
-                return (student_id, num_answered)
+        if result.data and len(result.data) > 0:
+            session = result.data[0]
+            student_id = session['student_id']
+            
+            # Contar quantas questões já foram respondidas
+            responses_df = get_student_responses(student_id)
+            num_answered = len(responses_df)
+            
+            return (student_id, num_answered)
         
         return None
         
