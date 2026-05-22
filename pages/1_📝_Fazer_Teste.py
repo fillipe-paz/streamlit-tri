@@ -110,14 +110,19 @@ def display_question(question, question_num, total_questions, time_per_question)
     
     # Verificar timeout
     if remaining_time == 0:
-        # Timeout - exibir mensagem e salvar resposta vazia
+        # Timeout - exibir mensagem e botão para prosseguir
         timer_module.display_timeout_message(st.empty())
-        time.sleep(2)  # Pausa de 2 segundos para mostrar mensagem
         
-        # Salvar resposta como timeout
-        save_response_and_update_theta(question, None, True)
-        timer_module.clear_timer(question['id'])
-        st.rerun()
+        st.warning("⏰ **Tempo esgotado!** Esta questão será marcada como não respondida.")
+        
+        # Botão para prosseguir
+        if st.button("➡️ Próxima Questão", type="primary", use_container_width=True):
+            # Salvar resposta como timeout
+            save_response_and_update_theta(question, None, True)
+            timer_module.clear_timer(question['id'])
+            st.rerun()
+        
+        st.stop()  # Impede a exibição da questão até clicar no botão
     
     # Exibir questão
     st.markdown(f"### Questão {question_num}")
@@ -423,12 +428,17 @@ def main():
         display_results(questions)
         return
     
-    # Auto-refresh a cada 500ms para atualizar timer
-    st_autorefresh(interval=500, key="timer_refresh")
-    
     # Exibir questão atual
     current_q_index = st.session_state['current_question']
     current_question = questions[current_q_index]
+    
+    # Verificar se timer ainda está ativo antes de ativar autorefresh
+    timer_key = f"timer_{current_question['id']}"
+    if timer_key in st.session_state and st.session_state[timer_key].get('is_active', False):
+        remaining = timer_module.get_timer_remaining(current_question['id'])
+        if remaining > 0:
+            # Auto-refresh a cada 1000ms (1 segundo) para atualizar timer
+            st_autorefresh(interval=1000, key=f"timer_refresh_{current_question['id']}")
     
     display_question(
         current_question,
