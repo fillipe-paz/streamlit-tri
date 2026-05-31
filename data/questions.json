@@ -1,0 +1,526 @@
+{
+  "time_per_question": 45,
+  "total_exam_time_minutes": 60,
+  "questions": [
+    {
+      "id": "Q001",
+      "subject": "História do Brasil",
+      "question": "Em que ano foi proclamada a independência do Brasil?",
+      "options": [
+        {"id": "A", "text": "1822"},
+        {"id": "B", "text": "1889"},
+        {"id": "C", "text": "1500"},
+        {"id": "D", "text": "1930"}
+      ],
+      "correct_answer": "A",
+      "tri_parameters": {"a": 1.2, "b": -1.5, "c": 0.25}
+    },
+    {
+      "id": "Q002",
+      "subject": "Geografia",
+      "question": "Qual é o maior rio do mundo em volume de água?",
+      "options": [
+        {"id": "A", "text": "Rio Nilo"},
+        {"id": "B", "text": "Rio Amazonas"},
+        {"id": "C", "text": "Rio Mississipi"},
+        {"id": "D", "text": "Rio Yangtzé"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.0, "b": -0.8, "c": 0.25}
+    },
+    {
+      "id": "Q003",
+      "subject": "Ciências",
+      "question": "Qual é o planeta mais próximo do Sol?",
+      "options": [
+        {"id": "A", "text": "Vênus"},
+        {"id": "B", "text": "Terra"},
+        {"id": "C", "text": "Mercúrio"},
+        {"id": "D", "text": "Marte"}
+      ],
+      "correct_answer": "C",
+      "tri_parameters": {"a": 1.3, "b": -1.0, "c": 0.25}
+    },
+    {
+      "id": "Q004",
+      "subject": "História do Brasil",
+      "question": "Quem foi o primeiro presidente do Brasil?",
+      "options": [
+        {"id": "A", "text": "Getúlio Vargas"},
+        {"id": "B", "text": "Marechal Deodoro da Fonseca"},
+        {"id": "C", "text": "Juscelino Kubitschek"},
+        {"id": "D", "text": "Dom Pedro II"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.1, "b": 0.2, "c": 0.25}
+    },
+    {
+      "id": "Q005",
+      "subject": "Cultura Geral",
+      "question": "Qual é a capital da Austrália?",
+      "options": [
+        {"id": "A", "text": "Sydney"},
+        {"id": "B", "text": "Melbourne"},
+        {"id": "C", "text": "Canberra"},
+        {"id": "D", "text": "Brisbane"}
+      ],
+      "correct_answer": "C",
+      "tri_parameters": {"a": 1.4, "b": 0.8, "c": 0.25}
+    },
+    {
+      "id": "Q006",
+      "subject": "Ciências",
+      "question": "Qual é a fórmula química da água?",
+      "options": [
+        {"id": "A", "text": "CO2"},
+        {"id": "B", "text": "H2O"},
+        {"id": "C", "text": "O2"},
+        {"id": "D", "text": "NaCl"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.5, "b": -1.8, "c": 0.25}
+    },
+    {
+      "id": "Q007",
+      "subject": "Geografia",
+      "question": "Quantos continentes existem no mundo?",
+      "options": [
+        {"id": "A", "text": "5"},
+        {"id": "B", "text": "6"},
+        {"id": "C", "text": "7"},
+        {"id": "D", "text": "8"}
+      ],
+      "correct_answer": "C",
+      "tri_parameters": {"a": 1.0, "b": -1.2, "c": 0.25}
+    },
+    {
+      "id": "Q008",
+      "subject": "História Mundial",
+      "question": "Em que ano ocorreu a queda do Muro de Berlim?",
+      "options": [
+        {"id": "A", "text": "1985"},
+        {"id": "B", "text": "1989"},
+        {"id": "C", "text": "1991"},
+        {"id": "D", "text": "1995"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.2, "b": 0.5, "c": 0.25}
+    },
+    {
+      "id": "Q009",
+      "subject": "Ciências",
+      "question": "Qual é o órgão responsável por bombear o sangue no corpo humano?",
+      "options": [
+        {"id": "A", "text": "Pulmão"},
+        {"id": "B", "text": "Fígado"},
+        {"id": "C", "text": "Coração"},
+        {"id": "D", "text": "Rim"}
+      ],
+      "correct_answer": "C",
+      "tri_parameters": {"a": 1.4, "b": -1.6, "c": 0.25}
+    },
+    {
+      "id": "Q010",
+      "subject": "Cultura Geral",
+      "question": "Quem pintou a Mona Lisa?",
+      "options": [
+        {"id": "A", "text": "Pablo Picasso"},
+        {"id": "B", "text": "Leonardo da Vinci"},
+        {"id": "C", "text": "Vincent van Gogh"},
+        {"id": "D", "text": "Michelangelo"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.1, "b": -0.3, "c": 0.25}
+    },
+    {
+      "id": "Q011",
+      "subject": "Geografia",
+      "question": "Qual é o maior país do mundo em área territorial?",
+      "options": [
+        {"id": "A", "text": "Canadá"},
+        {"id": "B", "text": "China"},
+        {"id": "C", "text": "Estados Unidos"},
+        {"id": "D", "text": "Rússia"}
+      ],
+      "correct_answer": "D",
+      "tri_parameters": {"a": 1.0, "b": -0.5, "c": 0.25}
+    },
+    {
+      "id": "Q012",
+      "subject": "História do Brasil",
+      "question": "Qual presidente brasileiro foi responsável pela construção de Brasília?",
+      "options": [
+        {"id": "A", "text": "Getúlio Vargas"},
+        {"id": "B", "text": "Juscelino Kubitschek"},
+        {"id": "C", "text": "João Goulart"},
+        {"id": "D", "text": "Jânio Quadros"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.2, "b": 0.3, "c": 0.25}
+    },
+    {
+      "id": "Q013",
+      "subject": "Ciências",
+      "question": "Qual é o elemento químico mais abundante na atmosfera terrestre?",
+      "options": [
+        {"id": "A", "text": "Oxigênio"},
+        {"id": "B", "text": "Carbono"},
+        {"id": "C", "text": "Nitrogênio"},
+        {"id": "D", "text": "Hidrogênio"}
+      ],
+      "correct_answer": "C",
+      "tri_parameters": {"a": 1.3, "b": 0.4, "c": 0.25}
+    },
+    {
+      "id": "Q014",
+      "subject": "Cultura Geral",
+      "question": "Qual é a moeda oficial do Japão?",
+      "options": [
+        {"id": "A", "text": "Yuan"},
+        {"id": "B", "text": "Won"},
+        {"id": "C", "text": "Iene"},
+        {"id": "D", "text": "Dólar"}
+      ],
+      "correct_answer": "C",
+      "tri_parameters": {"a": 1.0, "b": 0.1, "c": 0.25}
+    },
+    {
+      "id": "Q015",
+      "subject": "Geografia",
+      "question": "Qual é o oceano que banha a costa leste do Brasil?",
+      "options": [
+        {"id": "A", "text": "Oceano Pacífico"},
+        {"id": "B", "text": "Oceano Atlântico"},
+        {"id": "C", "text": "Oceano Índico"},
+        {"id": "D", "text": "Oceano Ártico"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.5, "b": -1.4, "c": 0.25}
+    },
+    {
+      "id": "Q016",
+      "subject": "História Mundial",
+      "question": "Quem descobriu a América em 1492?",
+      "options": [
+        {"id": "A", "text": "Vasco da Gama"},
+        {"id": "B", "text": "Pedro Álvares Cabral"},
+        {"id": "C", "text": "Cristóvão Colombo"},
+        {"id": "D", "text": "Fernando de Magalhães"}
+      ],
+      "correct_answer": "C",
+      "tri_parameters": {"a": 1.1, "b": -0.7, "c": 0.25}
+    },
+    {
+      "id": "Q017",
+      "subject": "Ciências",
+      "question": "Quantos ossos tem o corpo humano adulto?",
+      "options": [
+        {"id": "A", "text": "186"},
+        {"id": "B", "text": "206"},
+        {"id": "C", "text": "226"},
+        {"id": "D", "text": "246"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.2, "b": 0.9, "c": 0.25}
+    },
+    {
+      "id": "Q018",
+      "subject": "Cultura Geral",
+      "question": "Qual é o idioma mais falado no mundo?",
+      "options": [
+        {"id": "A", "text": "Inglês"},
+        {"id": "B", "text": "Espanhol"},
+        {"id": "C", "text": "Mandarim"},
+        {"id": "D", "text": "Hindi"}
+      ],
+      "correct_answer": "C",
+      "tri_parameters": {"a": 1.0, "b": 0.6, "c": 0.25}
+    },
+    {
+      "id": "Q019",
+      "subject": "História do Brasil",
+      "question": "Qual foi o nome do movimento que resultou no fim da escravidão no Brasil?",
+      "options": [
+        {"id": "A", "text": "Proclamação da República"},
+        {"id": "B", "text": "Lei Áurea"},
+        {"id": "C", "text": "Semana de Arte Moderna"},
+        {"id": "D", "text": "Inconfidência Mineira"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.3, "b": -0.2, "c": 0.25}
+    },
+    {
+      "id": "Q020",
+      "subject": "Geografia",
+      "question": "Qual é o deserto mais quente do mundo?",
+      "options": [
+        {"id": "A", "text": "Deserto do Saara"},
+        {"id": "B", "text": "Deserto de Gobi"},
+        {"id": "C", "text": "Deserto da Arábia"},
+        {"id": "D", "text": "Deserto do Atacama"}
+      ],
+      "correct_answer": "A",
+      "tri_parameters": {"a": 1.1, "b": 0.7, "c": 0.25}
+    },
+    {
+      "id": "Q021",
+      "subject": "Ciências",
+      "question": "Qual é a velocidade da luz no vácuo?",
+      "options": [
+        {"id": "A", "text": "300.000 km/s"},
+        {"id": "B", "text": "150.000 km/s"},
+        {"id": "C", "text": "450.000 km/s"},
+        {"id": "D", "text": "200.000 km/s"}
+      ],
+      "correct_answer": "A",
+      "tri_parameters": {"a": 1.4, "b": 1.2, "c": 0.25}
+    },
+    {
+      "id": "Q022",
+      "subject": "Cultura Geral",
+      "question": "Qual é o maior animal terrestre?",
+      "options": [
+        {"id": "A", "text": "Rinoceronte"},
+        {"id": "B", "text": "Elefante africano"},
+        {"id": "C", "text": "Hipopótamo"},
+        {"id": "D", "text": "Girafa"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.0, "b": -0.6, "c": 0.25}
+    },
+    {
+      "id": "Q023",
+      "subject": "História Mundial",
+      "question": "Qual foi a primeira civilização conhecida da história?",
+      "options": [
+        {"id": "A", "text": "Egípcia"},
+        {"id": "B", "text": "Grega"},
+        {"id": "C", "text": "Suméria"},
+        {"id": "D", "text": "Romana"}
+      ],
+      "correct_answer": "C",
+      "tri_parameters": {"a": 1.3, "b": 1.0, "c": 0.25}
+    },
+    {
+      "id": "Q024",
+      "subject": "Geografia",
+      "question": "Qual é a montanha mais alta do mundo?",
+      "options": [
+        {"id": "A", "text": "K2"},
+        {"id": "B", "text": "Monte Everest"},
+        {"id": "C", "text": "Monte Kilimanjaro"},
+        {"id": "D", "text": "Monte Fuji"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.2, "b": -0.9, "c": 0.25}
+    },
+    {
+      "id": "Q025",
+      "subject": "Ciências",
+      "question": "Qual é o principal gás responsável pelo efeito estufa?",
+      "options": [
+        {"id": "A", "text": "Oxigênio"},
+        {"id": "B", "text": "Nitrogênio"},
+        {"id": "C", "text": "Dióxido de carbono"},
+        {"id": "D", "text": "Hélio"}
+      ],
+      "correct_answer": "C",
+      "tri_parameters": {"a": 1.1, "b": 0.3, "c": 0.25}
+    },
+    {
+      "id": "Q026",
+      "subject": "História do Brasil",
+      "question": "Em que ano foi promulgada a atual Constituição brasileira?",
+      "options": [
+        {"id": "A", "text": "1985"},
+        {"id": "B", "text": "1988"},
+        {"id": "C", "text": "1990"},
+        {"id": "D", "text": "1992"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.2, "b": 0.5, "c": 0.25}
+    },
+    {
+      "id": "Q027",
+      "subject": "Cultura Geral",
+      "question": "Qual esporte é conhecido como 'o esporte bretão'?",
+      "options": [
+        {"id": "A", "text": "Tênis"},
+        {"id": "B", "text": "Rugby"},
+        {"id": "C", "text": "Futebol"},
+        {"id": "D", "text": "Cricket"}
+      ],
+      "correct_answer": "C",
+      "tri_parameters": {"a": 0.9, "b": 0.8, "c": 0.25}
+    },
+    {
+      "id": "Q028",
+      "subject": "Geografia",
+      "question": "Qual é a capital do Canadá?",
+      "options": [
+        {"id": "A", "text": "Toronto"},
+        {"id": "B", "text": "Vancouver"},
+        {"id": "C", "text": "Montreal"},
+        {"id": "D", "text": "Ottawa"}
+      ],
+      "correct_answer": "D",
+      "tri_parameters": {"a": 1.3, "b": 1.1, "c": 0.25}
+    },
+    {
+      "id": "Q029",
+      "subject": "Ciências",
+      "question": "Qual é a menor unidade da matéria?",
+      "options": [
+        {"id": "A", "text": "Molécula"},
+        {"id": "B", "text": "Átomo"},
+        {"id": "C", "text": "Célula"},
+        {"id": "D", "text": "Próton"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.1, "b": 0.4, "c": 0.25}
+    },
+    {
+      "id": "Q030",
+      "subject": "História Mundial",
+      "question": "Qual império foi liderado por Júlio César?",
+      "options": [
+        {"id": "A", "text": "Império Persa"},
+        {"id": "B", "text": "Império Romano"},
+        {"id": "C", "text": "Império Otomano"},
+        {"id": "D", "text": "Império Mongol"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.0, "b": 0.2, "c": 0.25}
+    },
+    {
+      "id": "Q031",
+      "subject": "Cultura Geral",
+      "question": "Quantas teclas tem um piano tradicional?",
+      "options": [
+        {"id": "A", "text": "76"},
+        {"id": "B", "text": "88"},
+        {"id": "C", "text": "92"},
+        {"id": "D", "text": "100"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.2, "b": 1.3, "c": 0.25}
+    },
+    {
+      "id": "Q032",
+      "subject": "Geografia",
+      "question": "Qual país tem o maior número de ilhas no mundo?",
+      "options": [
+        {"id": "A", "text": "Filipinas"},
+        {"id": "B", "text": "Indonésia"},
+        {"id": "C", "text": "Suécia"},
+        {"id": "D", "text": "Japão"}
+      ],
+      "correct_answer": "C",
+      "tri_parameters": {"a": 1.4, "b": 1.5, "c": 0.25}
+    },
+    {
+      "id": "Q033",
+      "subject": "Ciências",
+      "question": "Qual é o tipo sanguíneo considerado doador universal?",
+      "options": [
+        {"id": "A", "text": "A+"},
+        {"id": "B", "text": "B-"},
+        {"id": "C", "text": "O-"},
+        {"id": "D", "text": "AB+"}
+      ],
+      "correct_answer": "C",
+      "tri_parameters": {"a": 1.3, "b": 0.7, "c": 0.25}
+    },
+    {
+      "id": "Q034",
+      "subject": "História do Brasil",
+      "question": "Qual foi o período da ditadura militar no Brasil?",
+      "options": [
+        {"id": "A", "text": "1954-1974"},
+        {"id": "B", "text": "1964-1985"},
+        {"id": "C", "text": "1960-1980"},
+        {"id": "D", "text": "1970-1990"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.2, "b": 0.6, "c": 0.25}
+    },
+    {
+      "id": "Q035",
+      "subject": "Cultura Geral",
+      "question": "Quem escreveu 'Dom Casmurro'?",
+      "options": [
+        {"id": "A", "text": "José de Alencar"},
+        {"id": "B", "text": "Machado de Assis"},
+        {"id": "C", "text": "Castro Alves"},
+        {"id": "D", "text": "Carlos Drummond de Andrade"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.1, "b": 0.1, "c": 0.25}
+    },
+    {
+      "id": "Q036",
+      "subject": "Geografia",
+      "question": "Qual é a linha imaginária que divide a Terra em hemisfério norte e sul?",
+      "options": [
+        {"id": "A", "text": "Trópico de Capricórnio"},
+        {"id": "B", "text": "Meridiano de Greenwich"},
+        {"id": "C", "text": "Linha do Equador"},
+        {"id": "D", "text": "Trópico de Câncer"}
+      ],
+      "correct_answer": "C",
+      "tri_parameters": {"a": 1.4, "b": -0.4, "c": 0.25}
+    },
+    {
+      "id": "Q037",
+      "subject": "Ciências",
+      "question": "Qual fenômeno natural é medido pela Escala Richter?",
+      "options": [
+        {"id": "A", "text": "Furacões"},
+        {"id": "B", "text": "Terremotos"},
+        {"id": "C", "text": "Tsunamis"},
+        {"id": "D", "text": "Vulcões"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.2, "b": 0.0, "c": 0.25}
+    },
+    {
+      "id": "Q038",
+      "subject": "História Mundial",
+      "question": "Em que século ocorreu a Revolução Francesa?",
+      "options": [
+        {"id": "A", "text": "Século XVII"},
+        {"id": "B", "text": "Século XVIII"},
+        {"id": "C", "text": "Século XIX"},
+        {"id": "D", "text": "Século XX"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.1, "b": 0.5, "c": 0.25}
+    },
+    {
+      "id": "Q039",
+      "subject": "Cultura Geral",
+      "question": "Quantos minutos tem uma partida de futebol?",
+      "options": [
+        {"id": "A", "text": "80 minutos"},
+        {"id": "B", "text": "90 minutos"},
+        {"id": "C", "text": "100 minutos"},
+        {"id": "D", "text": "120 minutos"}
+      ],
+      "correct_answer": "B",
+      "tri_parameters": {"a": 1.5, "b": -1.3, "c": 0.25}
+    },
+    {
+      "id": "Q040",
+      "subject": "Geografia",
+      "question": "Qual é o país com maior população do mundo?",
+      "options": [
+        {"id": "A", "text": "Índia"},
+        {"id": "B", "text": "Estados Unidos"},
+        {"id": "C", "text": "China"},
+        {"id": "D", "text": "Indonésia"}
+      ],
+      "correct_answer": "C",
+      "tri_parameters": {"a": 1.0, "b": -0.5, "c": 0.25}
+    }
+  ]
+}
