@@ -384,8 +384,18 @@ def display_results(questions):
         # Criar tabela com detalhes
         details = []
         
-        for idx, question in enumerate(questions[:len(st.session_state['responses'])]):
-            response = st.session_state['responses'][idx]
+        for idx, question in enumerate(questions):
+            # Acessar resposta pelo question_id (responses é um dicionário)
+            response = st.session_state['responses'].get(question['id'])
+            
+            # Só processar se tiver resposta registrada
+            if response is None:
+                continue
+            
+            # Verificar se os índices estão dentro do range
+            if idx >= len(st.session_state['items_data']) or idx >= len(st.session_state['theta_estimates']):
+                continue
+                
             item = st.session_state['items_data'][idx]
             theta_at_time = st.session_state['theta_estimates'][idx]
             
@@ -411,7 +421,10 @@ def display_results(questions):
                 'θ após questão': f"{theta_at_time:.2f}"
             })
         
-        st.dataframe(details, use_container_width=True, hide_index=True)
+        if details:
+            st.dataframe(details, use_container_width=True, hide_index=True)
+        else:
+            st.info("Nenhuma resposta registrada ainda.")
         
         st.markdown("""
         **Legenda:**
@@ -677,8 +690,8 @@ def main():
                 
                 st.markdown(countdown_html, unsafe_allow_html=True)
                 
-                # Auto-refresh a cada segundo para atualizar o countdown
-                st_autorefresh(interval=1000, key="exam_start_countdown")
+                # Auto-refresh a cada 20 segundos
+                st_autorefresh(interval=20000, key="exam_start_countdown")
             
             # Botão para voltar
             if st.button("🏠 Voltar ao Início", use_container_width=True, type="primary"):
@@ -707,9 +720,9 @@ def main():
         display_results(questions)
         return
     
-    # Autorefresh para atualizar timer (se houver deadline)
+    # Autorefresh a cada 20 segundos (se houver deadline)
     if remaining_time is not None:
-        st_autorefresh(interval=1000, key="global_timer_refresh")
+        st_autorefresh(interval=20000, key="global_timer_refresh")
     
     # Verificar se completou o teste
     if st.session_state['current_question'] >= len(questions):

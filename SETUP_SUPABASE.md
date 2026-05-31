@@ -80,9 +80,23 @@ ALTER TABLE sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE responses ENABLE ROW LEVEL SECURITY;
 
 -- Criar políticas permissivas (para aplicação funcionar)
-CREATE POLICY "Enable all for anon" ON exam_config FOR ALL USING (true);
-CREATE POLICY "Enable all for anon" ON sessions FOR ALL USING (true);
-CREATE POLICY "Enable all for anon" ON responses FOR ALL USING (true);
+-- Permitir todas operações em exam_config (SELECT, INSERT, UPDATE, DELETE)
+CREATE POLICY "Enable read for all" ON exam_config FOR SELECT USING (true);
+CREATE POLICY "Enable insert for all" ON exam_config FOR INSERT WITH CHECK (true);
+CREATE POLICY "Enable update for all" ON exam_config FOR UPDATE USING (true);
+CREATE POLICY "Enable delete for all" ON exam_config FOR DELETE USING (true);
+
+-- Permitir todas operações em sessions
+CREATE POLICY "Enable read for all on sessions" ON sessions FOR SELECT USING (true);
+CREATE POLICY "Enable insert for all on sessions" ON sessions FOR INSERT WITH CHECK (true);
+CREATE POLICY "Enable update for all on sessions" ON sessions FOR UPDATE USING (true);
+CREATE POLICY "Enable delete for all on sessions" ON sessions FOR DELETE USING (true);
+
+-- Permitir todas operações em responses
+CREATE POLICY "Enable read for all on responses" ON responses FOR SELECT USING (true);
+CREATE POLICY "Enable insert for all on responses" ON responses FOR INSERT WITH CHECK (true);
+CREATE POLICY "Enable update for all on responses" ON responses FOR UPDATE USING (true);
+CREATE POLICY "Enable delete for all on responses" ON responses FOR DELETE USING (true);
 ```
 
 4. Você verá: **"Success. No rows returned"** ✅
