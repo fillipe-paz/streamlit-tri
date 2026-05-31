@@ -560,6 +560,33 @@ def manage_exam_settings():
     """
     st.markdown("## ⚙️ Configurações da Prova")
     
+    # ===== CONFIGURAÇÃO: NÚMERO DE QUESTÕES =====
+    st.markdown("### 📝 Número de Questões")
+    
+    current_num_questions = database.get_num_questions()
+    
+    col_num1, col_num2 = st.columns([2, 1])
+    
+    with col_num1:
+        st.info(f"📌 Atualmente o teste tem **{current_num_questions} questões**. O banco possui 40 questões cadastradas.")
+    
+    with col_num2:
+        new_num = st.number_input(
+            "Definir número de questões",
+            min_value=1,
+            max_value=40,
+            value=current_num_questions,
+            step=1,
+            key="num_questions_input"
+        )
+        
+        if st.button("💾 Salvar", type="primary", use_container_width=True, key="save_num_questions"):
+            if database.set_num_questions(new_num):
+                st.success(f"✅ Número de questões atualizado para {new_num}!")
+                st.rerun()
+    
+    st.markdown("---")
+    
     st.markdown("### 🕐 Janela de Tempo da Avaliação")
     st.info("📌 Defina o horário de início e fim da prova. **Todos os horários são em Horário de Brasília (UTC-3)**")
     

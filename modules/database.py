@@ -280,6 +280,55 @@ def set_exam_deadline(deadline_datetime):
         st.error(f"Erro ao definir deadline: {e}")
         return False
 
+
+def get_num_questions():
+    """
+    Obtém o número de questões configurado para o teste.
+    
+    Returns:
+        int: Número de questões (padrão 40)
+    """
+    try:
+        client = get_supabase_client()
+        result = client.table("exam_config").select("config_value").eq("config_key", "num_questions").execute()
+        
+        if result.data and len(result.data) > 0:
+            num_str = result.data[0].get('config_value')
+            if num_str:
+                return int(num_str)
+        return 40  # Padrão
+    except Exception as e:
+        st.error(f"Erro ao buscar número de questões: {e}")
+        return 40
+
+
+def set_num_questions(num_questions):
+    """
+    Define o número de questões do teste.
+    
+    Args:
+        num_questions: int (número de questões, entre 1 e 40)
+    
+    Returns:
+        bool: True se sucesso, False se erro
+    """
+    try:
+        client = get_supabase_client()
+        
+        # Validar número de questões
+        num_questions = max(1, min(40, int(num_questions)))
+        
+        # Atualizar ou inserir
+        result = client.table("exam_config").update({
+            "config_value": str(num_questions),
+            "updated_at": datetime.now().isoformat()
+        }).eq("config_key", "num_questions").execute()
+        
+        return True
+    except Exception as e:
+        st.error(f"Erro ao definir número de questões: {e}")
+        return False
+
 def get_all_sessions() -> pd.DataFrame:
     """
     Recupera todas as sessões de todos os alunos.

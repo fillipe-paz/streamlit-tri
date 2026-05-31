@@ -17,11 +17,19 @@ st.set_page_config(
 
 
 def load_questions():
-    """Carrega as questões do arquivo JSON."""
+    """Carrega as questões do arquivo JSON e limita ao número configurado."""
     try:
         with open('data/questions.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
-        return data['questions'], data['time_per_question'], data.get('total_exam_time_minutes', 60)
+        
+        # Obter número de questões configurado no banco
+        num_questions = database.get_num_questions()
+        
+        # Limitar questões ao número configurado
+        all_questions = data['questions']
+        questions = all_questions[:num_questions]  # Pegar as primeiras N questões
+        
+        return questions, data['time_per_question'], data.get('total_exam_time_minutes', 60)
     except Exception as e:
         st.error(f"Erro ao carregar questões: {e}")
         return None, None, None

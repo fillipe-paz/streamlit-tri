@@ -37,7 +37,8 @@ CREATE TABLE exam_config (
 INSERT INTO exam_config (config_key, config_value) 
 VALUES 
     ('exam_start', NULL),
-    ('exam_deadline', NULL);
+    ('exam_deadline', NULL),
+    ('num_questions', '40');
 
 -- Criar tabela de sessões
 CREATE TABLE sessions (
