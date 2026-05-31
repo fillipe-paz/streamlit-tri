@@ -269,11 +269,22 @@ def set_exam_deadline(deadline_datetime):
         # Converter datetime para string ISO ou None
         deadline_str = deadline_datetime.isoformat() if deadline_datetime else None
         
-        # Atualizar ou inserir
-        result = client.table("exam_config").update({
-            "config_value": deadline_str,
-            "updated_at": datetime.now().isoformat()
-        }).eq("config_key", "exam_deadline").execute()
+        # Verificar se já existe
+        existing = client.table("exam_config").select("id").eq("config_key", "exam_deadline").execute()
+        
+        if existing.data and len(existing.data) > 0:
+            # Atualizar se já existe
+            result = client.table("exam_config").update({
+                "config_value": deadline_str,
+                "updated_at": datetime.now().isoformat()
+            }).eq("config_key", "exam_deadline").execute()
+        else:
+            # Inserir se não existe
+            result = client.table("exam_config").insert({
+                "config_key": "exam_deadline",
+                "config_value": deadline_str,
+                "updated_at": datetime.now().isoformat()
+            }).execute()
         
         return True
     except Exception as e:
@@ -318,11 +329,22 @@ def set_num_questions(num_questions):
         # Validar número de questões
         num_questions = max(1, min(40, int(num_questions)))
         
-        # Atualizar ou inserir
-        result = client.table("exam_config").update({
-            "config_value": str(num_questions),
-            "updated_at": datetime.now().isoformat()
-        }).eq("config_key", "num_questions").execute()
+        # Verificar se já existe
+        existing = client.table("exam_config").select("id").eq("config_key", "num_questions").execute()
+        
+        if existing.data and len(existing.data) > 0:
+            # Atualizar se já existe
+            result = client.table("exam_config").update({
+                "config_value": str(num_questions),
+                "updated_at": datetime.now().isoformat()
+            }).eq("config_key", "num_questions").execute()
+        else:
+            # Inserir se não existe
+            result = client.table("exam_config").insert({
+                "config_key": "num_questions",
+                "config_value": str(num_questions),
+                "updated_at": datetime.now().isoformat()
+            }).execute()
         
         return True
     except Exception as e:
@@ -509,11 +531,22 @@ def set_exam_start(start_datetime):
         # Converter datetime para string ISO ou None
         start_str = start_datetime.isoformat() if start_datetime else None
         
-        # Atualizar ou inserir
-        result = client.table("exam_config").update({
-            "config_value": start_str,
-            "updated_at": datetime.now().isoformat()
-        }).eq("config_key", "exam_start").execute()
+        # Verificar se já existe
+        existing = client.table("exam_config").select("id").eq("config_key", "exam_start").execute()
+        
+        if existing.data and len(existing.data) > 0:
+            # Atualizar se já existe
+            result = client.table("exam_config").update({
+                "config_value": start_str,
+                "updated_at": datetime.now().isoformat()
+            }).eq("config_key", "exam_start").execute()
+        else:
+            # Inserir se não existe
+            result = client.table("exam_config").insert({
+                "config_key": "exam_start",
+                "config_value": start_str,
+                "updated_at": datetime.now().isoformat()
+            }).execute()
         
         return True
     except Exception as e:
