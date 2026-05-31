@@ -272,6 +272,9 @@ def display_results(questions):
     
     st.markdown("---")
     
+    # Buscar respostas do aluno do banco de dados
+    student_responses = database.get_student_responses(st.session_state.get('student_id', ''))
+    
     # Calcular estatísticas
     responses_list = st.session_state.get('responses_list', [])
     final_theta = st.session_state['theta_estimates'][-1] if st.session_state.get('theta_estimates') else 0.0
