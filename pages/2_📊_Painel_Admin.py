@@ -195,16 +195,26 @@ def display_individual_analysis(sessions_df, responses_df, questions):
         st.info("ℹ️ Nenhum aluno para analisar.")
         return
     
-    # Seletor de aluno
-    student_names = sessions_df['student_name'].unique().tolist()
-    selected_student = st.selectbox("Selecione um aluno:", student_names)
+    # Criar lista de opções com nome + ID (para diferenciar alunos com mesmo nome)
+    sessions_df['display_name'] = sessions_df['student_name'] + ' (' + sessions_df['student_id'].str[-8:] + ')'
+    student_options = sessions_df[['display_name', 'student_id']].to_dict('records')
     
-    if selected_student:
-        # Obter dados do aluno
-        student_session = sessions_df[sessions_df['student_name'] == selected_student].iloc[0]
-        student_id = student_session['student_id']
+    # Seletor de aluno
+    selected_display = st.selectbox(
+        "Selecione um aluno:", 
+        options=[opt['display_name'] for opt in student_options]
+    )
+    
+    if selected_display:
+        # Encontrar student_id correspondente
+        student_id = next(opt['student_id'] for opt in student_options if opt['display_name'] == selected_display)
+        
+        # Obter dados do aluno pelo student_id (único)
+        student_session = sessions_df[sessions_df['student_id'] == student_id].iloc[0]
+        selected_student = student_session['student_name']
         
         st.markdown(f"### Aluno: {selected_student}")
+        st.caption(f"ID: {student_id}")
         
         # Calcular rankings (apenas alunos que completaram)
         completed_sessions = sessions_df[sessions_df['status'] == 'completed'].copy()
