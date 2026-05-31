@@ -240,6 +240,13 @@ def display_individual_analysis(sessions_df, responses_df, questions):
         all_responses_global = database.get_all_responses()
         questions_list = questions
         
+        # Obter número total de questões da sessão específica
+        # Usa o valor salvo na sessão, senão busca do banco (backward compatibility)
+        if 'num_questions' in student_session.index and pd.notna(student_session['num_questions']):
+            total_questions = int(student_session['num_questions'])
+        else:
+            total_questions = database.get_num_questions()  # Fallback para testes antigos
+        
         item_difficulties = []
         for question in questions_list:
             q_responses = all_responses_global[all_responses_global['question_id'] == question['id']]
@@ -280,12 +287,12 @@ def display_individual_analysis(sessions_df, responses_df, questions):
         
         with col3:
             correct = student_session['total_correct']
-            correct_display = f"{int(correct)}/40" if pd.notna(correct) and correct != '' else '-'
+            correct_display = f"{int(correct)}/{total_questions}" if pd.notna(correct) and correct != '' else '-'
             st.metric("Acertos", correct_display)
         
         with col4:
             if pd.notna(correct) and correct != '':
-                classical = (float(correct) / 40) * 100
+                classical = (float(correct) / total_questions) * 100
                 classical_delta = f"{classical_rank}º/{total_completed}" if classical_rank else None
                 st.metric("Nota Bruta", f"{classical:.1f}%", delta=classical_delta, delta_color="off")
             else:

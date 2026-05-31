@@ -152,9 +152,13 @@ def start_session(student_id: str, student_name: str) -> bool:
         if not client:
             return False
         
+        # Obter número de questões configurado no momento do teste
+        num_questions = get_num_questions()
+        
         data = {
             "student_id": student_id,
             "student_name": student_name,
+            "num_questions": num_questions,
             "status": "in_progress"
         }
         

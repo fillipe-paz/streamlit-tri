@@ -50,6 +50,7 @@ CREATE TABLE sessions (
     final_theta FLOAT,
     total_correct INTEGER,
     total_timeout INTEGER,
+    num_questions INTEGER DEFAULT 40,
     status TEXT NOT NULL DEFAULT 'in_progress',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
