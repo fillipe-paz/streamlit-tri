@@ -386,19 +386,19 @@ def calculate_classical_score(responses: List[bool]) -> float:
     return (correct / total) * 100
 
 
-def calculate_tct_score(responses: List[bool], item_difficulties: List[float]) -> float:
+def calculate_weighted_score(responses: List[bool], item_difficulties: List[float]) -> float:
     """
-    Calcula a nota pela Teoria Clássica dos Testes (TCT).
-    Pondera os acertos pela dificuldade empírica dos itens.
+    Calcula a nota ponderada pela dificuldade empírica dos itens.
     
-    Na TCT, itens mais difíceis (menor taxa de acerto) valem mais pontos.
+    NOTA: Esta não é a TCT tradicional (que seria soma simples de acertos).
+    Aqui, itens mais difíceis (menor taxa de acerto) valem mais pontos.
     
     Args:
         responses: Lista de respostas (True=acertou, False=errou)
         item_difficulties: Lista com taxa de acerto de cada item (0-1)
     
     Returns:
-        float: Nota TCT ponderada [0, 100]
+        float: Nota ponderada [0, 100]
     """
     if not responses or not item_difficulties or len(responses) != len(item_difficulties):
         return 0.0

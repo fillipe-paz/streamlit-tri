@@ -293,7 +293,7 @@ def display_results(questions):
             difficulty = 0.5  # Default se não há dados
         item_difficulties.append(difficulty)
     
-    tct_score = tri_calculator.calculate_tct_score(responses_list, item_difficulties)
+    weighted_score = tri_calculator.calculate_weighted_score(responses_list, item_difficulties)
     
     # Contar timeouts (questões não respondidas)
     total_timeout = total_questions - answered_questions
@@ -339,8 +339,8 @@ def display_results(questions):
         st.caption(f"θ = {final_theta:.2f}")
     
     with col2:
-        st.metric("Nota TCT", f"{tct_score:.1f}%")
-        st.caption("Ponderada por dificuldade")
+        st.metric("Nota Ponderada", f"{weighted_score:.1f}%")
+        st.caption("Por dificuldade empírica")
     
     with col3:
         classical_delta = f"{classical_rank}º de {total_completed}" if classical_rank and total_completed > 1 else None
@@ -557,29 +557,29 @@ def display_results(questions):
             """)
             
             st.markdown(f"""
-            #### TRI vs TCT vs Nota Bruta
+            #### Três Sistemas de Pontuação
             
-            **Nota Bruta:** {classical_score:.1f}%
+            **1. Nota Bruta (TCT Tradicional):** {classical_score:.1f}%
             - Simplesmente % de acertos
             - Todas as questões têm o mesmo peso
+            - Dois alunos com mesmo nº de acertos = mesma nota
             
-            **Nota TCT:** {tct_score:.1f}%
-            - Pondera acertos pela dificuldade empírica
+            **2. Nota Ponderada:** {weighted_score:.1f}%
+            - Pondera acertos pela dificuldade empírica (taxa de acerto da turma)
             - Questões que menos alunos acertam valem mais pontos
-            - Considera o desempenho da turma
+            - Dois alunos com mesmo nº de acertos podem ter notas diferentes
             
-            **Nota TRI (ENEM):** {enem_score:.0f} pontos (θ = {final_theta:.2f})
-            - Modelo logístico de 3 parâmetros
-            - Considera dificuldade, discriminação e chute
+            **3. Nota TRI (ENEM):** {enem_score:.0f} pontos (θ = {final_theta:.2f})
+            - Modelo logístico de 3 parâmetros (discriminação, dificuldade, acerto casual)
+            - Considera qualidade dos itens além da dificuldade
             - Independente da turma (usa parâmetros pré-calibrados)
             
-            **Diferenças principais:**
-            - **TCT:** Dificuldade baseada na turma atual
-            - **TRI:** Dificuldade pré-estabelecida nos parâmetros do item
-            
-            **Exemplo prático:**
-            Dois alunos podem ter a mesma % de acertos (nota bruta igual),
-            mas notas TCT e TRI diferentes, dependendo de **quais questões** acertaram.
+            **Comparação:**
+            | Método | Peso dos Itens | Depende da Turma |
+            |--------|----------------|------------------|
+            | Bruta | Todos iguais | Não |
+            | Ponderada | Por dificuldade empírica | Sim |
+            | TRI | Por parâmetros a, b, c | Não |
             """)
     
     st.markdown("---")

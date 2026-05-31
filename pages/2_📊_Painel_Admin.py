@@ -250,9 +250,9 @@ def display_individual_analysis(sessions_df, responses_df, questions):
                 else:
                     responses_list.append(False)
             
-            tct_score = tri_calculator.calculate_tct_score(responses_list, item_difficulties)
+            weighted_score = tri_calculator.calculate_weighted_score(responses_list, item_difficulties)
         else:
-            tct_score = 0.0
+            weighted_score = 0.0
         
         # Métricas do aluno
         col1, col2, col3, col4, col5 = st.columns(5)
@@ -266,7 +266,7 @@ def display_individual_analysis(sessions_df, responses_df, questions):
                 st.metric("Nota TRI (ENEM)", "-")
         
         with col2:
-            st.metric("Nota TCT", f"{tct_score:.1f}%")
+            st.metric("Nota Ponderada", f"{weighted_score:.1f}%")
         
         with col3:
             correct = student_session['total_correct']
