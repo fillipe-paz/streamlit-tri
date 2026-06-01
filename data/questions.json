@@ -90,7 +90,7 @@
         {"id": "C", "text": "7"},
         {"id": "D", "text": "8"}
       ],
-      "correct_answer": "C",
+      "correct_answer": "A",
       "tri_parameters": {"a": 1.0, "b": -1.2, "c": 0.25}
     },
     {
