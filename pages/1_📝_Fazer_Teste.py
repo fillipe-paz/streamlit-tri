@@ -470,8 +470,20 @@ def display_results(questions):
         """)
         
         # Seletor de questão mais destacado
-        question_options = {f"Q{idx+1:02d} - {q['subject']}: {q['question'][:50]}..." if len(q['question']) > 50 else f"Q{idx+1:02d} - {q['subject']}: {q['question']}": (idx, q) 
-                           for idx, q in enumerate(questions[:len(st.session_state['responses_list'])])}
+        # Mapear apenas questões que foram respondidas (que têm theta_estimate)
+        question_options = {}
+        response_idx = 0  # Índice na lista de respostas (responses_list/theta_estimates)
+        
+        for q_idx, question in enumerate(questions):
+            if question['id'] in st.session_state['responses']:
+                response_data = st.session_state['responses'][question['id']]
+                if response_data and response_data.get('answer'):
+                    # Criar chave do selector
+                    q_text = question['question'][:50] + "..." if len(question['question']) > 50 else question['question']
+                    key = f"Q{q_idx+1:02d} - {question['subject']}: {q_text}"
+                    # Mapear para o índice na lista de respostas, não na lista de questões
+                    question_options[key] = (response_idx, question, q_idx)
+                    response_idx += 1
         
         selected_option = st.selectbox(
             "📝 Selecione uma questão para visualizar:",
@@ -480,9 +492,9 @@ def display_results(questions):
         )
         
         if selected_option:
-            q_idx, question = question_options[selected_option]
-            response = st.session_state['responses_list'][q_idx]
-            theta_at_time = st.session_state['theta_estimates'][q_idx]
+            resp_idx, question, q_idx = question_options[selected_option]
+            response = st.session_state['responses_list'][resp_idx]
+            theta_at_time = st.session_state['theta_estimates'][resp_idx]
             
             # Informações da questão
             col1, col2 = st.columns([3, 1])

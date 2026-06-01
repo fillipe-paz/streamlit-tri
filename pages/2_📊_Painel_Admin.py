@@ -265,7 +265,6 @@ def display_individual_analysis(sessions_df, responses_df, questions):
         
         # Calcular TCT score
         all_responses_global = database.get_all_responses()
-        questions_list = questions
         
         # Obter número total de questões da sessão específica
         # Usa o valor salvo na sessão, senão busca do banco (backward compatibility)
@@ -273,6 +272,9 @@ def display_individual_analysis(sessions_df, responses_df, questions):
             total_questions = int(student_session['num_questions'])
         else:
             total_questions = database.get_num_questions()  # Fallback para testes antigos
+        
+        # Usar apenas as questões que estavam disponíveis naquela sessão
+        questions_list = questions[:total_questions]
         
         item_difficulties = []
         for question in questions_list:
