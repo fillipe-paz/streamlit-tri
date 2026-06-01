@@ -174,8 +174,12 @@ def display_students_list(sessions_df):
         )
     
     if 'total_correct' in display_df.columns:
-        display_df['Acertos'] = display_df['total_correct'].apply(
-            lambda x: f"{int(x)}/40" if pd.notna(x) and x != '' else '-'
+        # Usar num_questions da sessão, ou fallback para 40 se não existir
+        display_df['Acertos'] = display_df.apply(
+            lambda row: f"{int(row['total_correct'])}/{int(row.get('num_questions', 40))}" 
+            if pd.notna(row['total_correct']) and row['total_correct'] != '' 
+            else '-',
+            axis=1
         )
     
     if 'total_timeout' in display_df.columns:
