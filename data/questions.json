@@ -226,7 +226,7 @@
     {
       "id": "Q018",
       "subject": "Cultura Geral",
-      "question": "Qual é o idioma mais falado no mundo?",
+      "question": "Qual é o idioma com mais falantes nativos?",
       "options": [
         {"id": "A", "text": "Inglês"},
         {"id": "B", "text": "Espanhol"},
