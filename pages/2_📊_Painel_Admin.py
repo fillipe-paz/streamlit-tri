@@ -795,6 +795,13 @@ def manage_exam_settings():
 def main():
     """Função principal do painel administrativo."""
     
+    # Logo da instituição
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.image("https://portal.cin.ufpe.br/wp-content/uploads/2025/08/HC.png", use_container_width=True)
+    
+    st.markdown("---")
+    
     st.markdown("# 📊 Painel Administrativo")
     
     # Verificar autenticação

@@ -73,6 +73,11 @@ def load_questions():
 def main():
     """Função principal da aplicação."""
     
+    # Logo da instituição
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.image("https://portal.cin.ufpe.br/wp-content/uploads/2025/08/HC.png", use_container_width=True)
+    
     # Título
     st.markdown('<div class="main-title">📊 Calculadora TRI</div>', unsafe_allow_html=True)
     st.markdown('<div class="subtitle">Teoria de Resposta ao Item - Demonstração Didática</div>', unsafe_allow_html=True)

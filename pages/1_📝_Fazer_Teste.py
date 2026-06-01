@@ -658,6 +658,13 @@ def display_results(questions):
 def main():
     """Função principal da página de teste."""
     
+    # Logo da instituição
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.image("https://portal.cin.ufpe.br/wp-content/uploads/2025/08/HC.png", use_container_width=True)
+    
+    st.markdown("---")
+    
     # Verificar se está logado
     if 'student_name' not in st.session_state or 'student_id' not in st.session_state:
         st.error("⚠️ Você precisa fazer login primeiro!")
