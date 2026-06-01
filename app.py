@@ -209,8 +209,8 @@ def main():
     # Footer
     st.markdown("""
     <div class="footer">
-        <span class="footer-dev">Desenvolvido por:</span> Fillipe Paz<br>
-        <span class="footer-dev">Grupo:</span> Letícia Lopes, Fillipe Paz, Weverton Barros, André Silva
+        <span class="footer-dev">Grupo:</span> Letícia Lopes, Fillipe Paz, Weverton Barros, André Silva<br>
+        <span class="footer-dev">Desenvolvido por:</span> Fillipe Paz
     </div>
     """, unsafe_allow_html=True)
 
