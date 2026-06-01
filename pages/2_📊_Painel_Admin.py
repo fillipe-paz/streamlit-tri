@@ -381,7 +381,7 @@ def display_individual_analysis(sessions_df, responses_df, questions):
         
         if not student_responses_df.empty:
             # Tabs para diferentes visualizações
-            tab1, tab2 = st.tabs(["📋 Respostas Detalhadas", "📈 Evolução do θ"])
+            tab1, tab2, tab3 = st.tabs(["📋 Respostas Detalhadas", "📈 Evolução do θ", "📄 Sumário Final"])
             
             with tab1:
                 st.markdown("#### Análise por Questão")
@@ -421,6 +421,62 @@ def display_individual_analysis(sessions_df, responses_df, questions):
                     st.plotly_chart(fig, use_container_width=True)
                 else:
                     st.info("Dados de theta não disponíveis.")
+            
+            with tab3:
+                st.markdown("#### 📊 Sumário Completo do Teste")
+                st.markdown("""
+                Este sumário mostra uma análise detalhada questão por questão, incluindo 
+                os parâmetros TRI de cada item e a probabilidade esperada de acerto.
+                """)
+                
+                # Criar tabela com detalhes completos
+                details = []
+                
+                # Ordenar respostas pela ordem das questões
+                for question in questions_list:
+                    q_resp = student_responses_df[student_responses_df['question_id'] == question['id']]
+                    
+                    if not q_resp.empty:
+                        q_resp_data = q_resp.iloc[0]
+                        item = question['tri_parameters']
+                        theta_at_time = q_resp_data['theta_estimate']
+                        
+                        # Calcular probabilidade esperada
+                        prob_expected = tri_calculator.probability_3pl(
+                            theta_at_time, item['a'], item['b'], item['c']
+                        ) if pd.notna(theta_at_time) else None
+                        
+                        # Determinar resultado
+                        if q_resp_data['is_timeout']:
+                            resultado = '⏰'
+                        elif q_resp_data['is_correct']:
+                            resultado = '✅'
+                        else:
+                            resultado = '❌'
+                        
+                        details.append({
+                            'Questão': question['id'],
+                            'Área': question['subject'],
+                            'Dificuldade (b)': f"{item['b']:.2f}",
+                            'Discriminação (a)': f"{item['a']:.2f}",
+                            'Prob. Esperada': f"{prob_expected:.1%}" if prob_expected else '-',
+                            'Resultado': resultado,
+                            'θ após questão': f"{theta_at_time:.2f}" if pd.notna(theta_at_time) else '-'
+                        })
+                
+                if details:
+                    st.dataframe(details, use_container_width=True, hide_index=True)
+                    
+                    st.markdown("""
+                    **Legenda:**
+                    - ✅ Acertou
+                    - ❌ Errou
+                    - ⏰ Timeout (tempo esgotado)
+                    - **Prob. Esperada:** Probabilidade de acerto baseada no θ do aluno no momento da questão
+                    - **θ após questão:** Habilidade estimada após responder essa questão
+                    """)
+                else:
+                    st.info("Nenhuma resposta registrada.")
         else:
             st.info("Nenhuma resposta registrada para este aluno.")
 
