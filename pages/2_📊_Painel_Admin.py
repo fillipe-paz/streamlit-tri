@@ -14,6 +14,29 @@ st.set_page_config(
     layout="wide"
 )
 
+# CSS para footer
+st.markdown("""
+<style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #f8f9fa;
+        border-top: 1px solid #e0e0e0;
+        padding: 10px 20px;
+        text-align: center;
+        font-size: 0.85rem;
+        color: #666;
+        z-index: 999;
+    }
+    .footer-dev {
+        font-weight: bold;
+        color: #333;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 
 def load_questions():
     """Carrega as questões do arquivo JSON."""
@@ -768,6 +791,14 @@ def main():
     
     with tab6:
         export_data(sessions_df, responses_df)
+    
+    # Footer
+    st.markdown("""
+    <div class="footer">
+        <span class="footer-dev">Desenvolvido por:</span> Fillipe Paz<br>
+        <span class="footer-dev">Grupo:</span> Letícia Lopes, Fillipe Paz, Weverton Barros, André Silva
+    </div>
+    """, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":

@@ -38,7 +38,7 @@ INSERT INTO exam_config (config_key, config_value)
 VALUES 
     ('exam_start', NULL),
     ('exam_deadline', NULL),
-    ('num_questions', '40');
+    ('num_questions', '20');
 
 -- Criar tabela de sessões
 CREATE TABLE sessions (
@@ -50,7 +50,7 @@ CREATE TABLE sessions (
     final_theta FLOAT,
     total_correct INTEGER,
     total_timeout INTEGER,
-    num_questions INTEGER DEFAULT 40,
+    num_questions INTEGER DEFAULT 20,
     status TEXT NOT NULL DEFAULT 'in_progress',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
