@@ -436,6 +436,9 @@ def display_results(questions):
                 timeout_check = student_responses[student_responses['question_id'] == question['id']]
                 if not timeout_check.empty:
                     is_timeout = timeout_check.iloc[0]['is_timeout']
+
+            # Verificar se a resposta está correta
+            is_correct = response.get('answer') == response.get('correct_answer') if response else False
             
             details.append({
                 'Questão': question['id'],
@@ -443,7 +446,7 @@ def display_results(questions):
                 'Dificuldade (b)': f"{item['b']:.2f}",
                 'Discriminação (a)': f"{item['a']:.2f}",
                 'Prob. Esperada': f"{prob_expected:.1%}",
-                'Resultado': '✅' if response else ('⏰' if is_timeout else '❌'),
+                'Resultado': '⏰' if is_timeout else ('✅' if is_correct else '❌'),
                 'θ após questão': f"{theta_at_time:.2f}"
             })
         
